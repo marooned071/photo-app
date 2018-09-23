@@ -1,0 +1,18 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo
+    container_name: springboot-mongo
+    ports:
+     - "27017:27017"
+    restart: always
+    volumes:
+      - $HOME/data/springboot-mongo-data:/data/db
+      - $HOME/data/springboot-mongo-bkp:/data/bkp
+  app:
+    image: springio/photo-storage:latest
+    ports:
+     - "8080:8080"
+    restart: always
+    depends_on:
+     - mongodb

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+    <link href="/css/photoapp.css" th:href="@{/css/photoapp.css}" rel="stylesheet" type="text/css"/>
+
+</head>
+<body>
+
+
+<div class="container">
+    <!--/*@thymesVar id="FileForm" type="com.example.photostorage.entity.FileForm"*/-->
+    <form action="#" th:action="@{/upload}" th:object="${FileForm}" method="post" enctype="multipart/form-data">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <input th:field="${FileForm.title}" type="text" class="form-control" id="inputTitle"
+                       placeholder="Title">
+            </div>
+
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                    <input th:field="${FileForm.file}" type="file" class="form-control-file"
+                           id="exampleFormControlFile1">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <textarea th:field="${FileForm.description}" class="form-control" id="inputDescription"
+                      placeholder="Put description here"></textarea>
+        </div>
+        <button type="submit" class="btn btn-default">Upload</button>
+    </form>
+</div>
+
+<div class="container-fluid" >
+    <table class="table">
+        <!--/*@thymesVar id="photos" type="java.util.List<com.example.photostorage.entity.ImageInfo>"*/-->
+        <tr th:each="photo : ${photos}">
+            <td th:text="${photo.title}">Title</td>
+            <td th:text="${photo.description}">Description</td>
+            <td>
+                <a th:href="@{/files/{id}/(id=${photo.fileId})}"></a>
+                <img class="img-responsive photo_app_resize" th:src="@{/files/{id}/(id=${photo.fileId})}"/>
+            </td>
+            <td>
+                <form action="#" th:object="${photo}" th:action="@{/remove/{id}/(id=${photo.id})}" th:method="delete">
+                    <button type="submit" class="btn btn-danger">Remove</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
